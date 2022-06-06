@@ -1,0 +1,84 @@
+GIT 
+Controle de versão
+
+SHA1: SECURE HASH ALGORITHM (ALGORITMO DE HASH SEGURO)
+Conjunto de funções hash criptográficas projetadas pela NSA (Agência de Segurança Nacional dos EUA)
+A encriptação gera conjunto de caracteres identificador de 40 dígitos. 
+Cada alteração gera outros dígitos.
+É uma forma curta de representar um arquivo.
+Ex: echo “ola mundo” | openss1 sha1 
+Git bash here – botão direito – lança direto na pasta
+** openssl sha1 texto.txt **
+Se alterar uma virgula ele gera outro identificador, se alterar novamente voltando a vírgula ele usa o mesmo identificador antigo
+
+OBJETOS FUNDAMENTAIS
+Objetos básicos do GIT: BLOBS; TREES; COMMITS
+Blobs bloco básico composição; trees armazenando e apontando para tipos de blobs diferentes
+Blobs: contem metadados, com tipo do objeto, tamanho string, \0, conteúdo 
+Arquivos ficam guardados dentro do blob
+Tem o sha1 do arquivo
+** Blob \0 Ola mundo 
+      Tipo   tamanho \0 conteudo(texto, binário, etc)
+** echo ‘conteudo’ | git hash-object –stdin
+** echo -e ‘blob 9\conteudo’ | openssl sha1
+
+SISTEMA DISTRIBUIDO
+Trees: armazenam blobs, contem também meta dados
+Armazena e aponta para tipos de dados diferentes
+Tree -> blob
+Tree -> tree -> blob
+
+** Tree <tamanho> \0 blob sa4d8s texto.txt
+
+SEGURANÇA
+Commit: o mais importante, o que junta tudo
+Aponta para tree – parente(ultimo commit) – autor – mensagem – timestamp(data hora criação)
+O sha1 desse commit é o hash de toda a essa informação
+Se vc altera uma blob, altera dado dentro de blob, gera sha1 da blob qu tem arvore apontando pra blob, sera alterado sha1 da blob, ...commit aponta pra arvore, sera refletido na commit
+
+ 
+Sistema distribuído e seguro
+Repositório hosteado  no github. O código que vive la representa a versão final do software. Supondo que tem 40 pessoas trabalhando nele, todos tem versões do código, como o commit é inalterável qquer pessoa que tem versão esta atualizado.
+
+Chaves SSH e Tokens
+Empurrar código pro github só com usuário e senha não da
+Chave ssh uma forma de conexão segura e encriptada entre duas maquinas.
+Chave publica e privada. Maquina configurada 
+Gerar chave ssh-keygen -t ed25519 -C email
+Comando para visualizar o conteúdo dentro da chave   cat id_ed25519.pub
+Copia o conteúdo e usa no github = adicionar nova chave ssh 
+Inicializar o ssh agent encarregado de lidar com as chaves   eval $(ssh-agent -s) mostra o numero do processo startado
+Passar a chave para o agente   ssh-add id_ed25519 (como está dentro da pasta passa a chave direto, senão deve passar o caminho completo) passa a chave privada toda vez q chegar criptografia com essa chave usa a privada para descriptografar
+Gerar a chave, navegar ate a pasta pegar o conteúdo e colocar no github, volta e passa pro agent.
+Passphrase murilogithub
+Dentro do cli pwd mostra o caminho completo de onde estou
+Git clone
+
+Token de acesso pessoal
+Ele tem inicio parecido gera no github, assemelha mais a digitar nome usuário e senha do que a vantagem da ssh da não requerer senha. Gera token no github guarda na maquina sempre que for faze git ele pede a senha e vc usa seu token.
+Iniciar o git
+Iniciar o versionamento
+Criar um commit
+- git init – além de criar a pasta .git, ela inicializa um repositório
+- git add mover arquivos 
+- git commit criar commit
+Criando um repositório
+Vai até a raiz c, dentro da pasta workspace, cria diretório livro-receitas (mkdir livro-receitas). Iniciar o git dentro da pasta (git init)
+ls -a   mostra pastas ocultas
+antes de criar o arquivo é preciso configurar
+git config –global user.email “murilo_bio@yahoo.com.br”
+git config –global user.name murilocanto
+agora cria o arquivo
+Commit
+Para commitar o arquivo   git add*
+git commit -m “commit inicial”  ->essa é a mensagem
+ traz na master o número inicial do sha1, a mensagem passada, algumas informações e nome do arquivo
+git status monitora os status dos arquivos
+
+ 
+ 
+ 
+git config --global --unset user.name    altera o user name
+
+git remote add origin https://github.com/murilocanto/livro-receitas.git passa do repositorio local para repositório remoto
+git remote -v   lista os reposi
